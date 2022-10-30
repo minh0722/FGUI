@@ -5,13 +5,13 @@
       <UniqueIdentifier>{d1606050-7b70-4a73-b15c-902289da2957}</UniqueIdentifier>
     </Filter>
     <Filter Include="lib">
-      <UniqueIdentifier>{7b9554e2-9d41-4d29-8172-7a325292ff97}</UniqueIdentifier>
+      <UniqueIdentifier>{c17fb5f4-dad0-42ea-a707-2be0999a472d}</UniqueIdentifier>
     </Filter>
     <Filter Include="lib\imgui">
-      <UniqueIdentifier>{dca5e773-1e69-4ab2-916f-c22a4ff39bf6}</UniqueIdentifier>
+      <UniqueIdentifier>{af9c90e0-4905-4b95-a894-3f50c99ea0a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lib\imgui\backend">
-      <UniqueIdentifier>{fb60368a-7553-4fd0-9e80-6988a4a1e4a5}</UniqueIdentifier>
+    <Filter Include="lib\imgui\backends">
+      <UniqueIdentifier>{9d5df2c8-561a-4445-90f7-c79235850b67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,10 +34,10 @@
       <Filter>lib\imgui</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp">
-      <Filter>lib\imgui\backend</Filter>
+      <Filter>lib\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp">
-      <Filter>lib\imgui\backend</Filter>
+      <Filter>lib\imgui\backends</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,10 +60,10 @@
       <Filter>lib\imgui</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h">
-      <Filter>lib\imgui\backend</Filter>
+      <Filter>lib\imgui\backends</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h">
-      <Filter>lib\imgui\backend</Filter>
+      <Filter>lib\imgui\backends</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
