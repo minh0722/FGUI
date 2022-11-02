@@ -37,6 +37,7 @@ int main(int argc, char** args)
     SQLSMALLINT driverLength;
     SQLSMALLINT attrLength;
 
+    // get information about all drivers
     SQLRETURN ret;
     while (SQL_SUCCEEDED(ret = SQLDrivers(env, SQL_FETCH_NEXT, driver, 256, &driverLength, attr, 256, &attrLength)))
     {
@@ -55,6 +56,7 @@ int main(int argc, char** args)
     SQLSMALLINT dsnLength;
     SQLSMALLINT descLength;
 
+    // get information about data sources
     while (SQL_SUCCEEDED(ret = SQLDataSources(env, SQL_FETCH_NEXT, dsn, 256, &dsnLength, desc, 256, &descLength)))
     {
         std::cout << dsn << " - " << desc << std::endl;
@@ -64,6 +66,31 @@ int main(int argc, char** args)
             std::cout << "data truncation" << std::endl;
         }
     }
+
+    SQLCHAR dsnString[] = "DSN=AdventureWorks;";
+    SQLCHAR outConnectionString[1024];
+    SQLSMALLINT outConnectionStringLength;
+
+    SQLHDBC dbc;
+    SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
+
+    if (SQL_SUCCEEDED(SQLDriverConnect(
+                    dbc,
+                    NULL,
+                    dsnString,
+                    sizeof(dsnString),
+                    outConnectionString,
+                    sizeof(outConnectionString),
+                    &outConnectionStringLength,
+                    SQL_DRIVER_NOPROMPT)))
+    {
+        std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
+    }
+    else
+    {
+        std::cout << "Failed to connect" << std::endl;
+    }
+
 
     // SQL CODE END
 
