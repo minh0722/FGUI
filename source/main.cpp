@@ -1,7 +1,13 @@
 // If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
-#define SQL_NOUNICODEMAP
+//#define SQL_NOUNICODEMAP
+
+#define SQL_THROW_IF_FAIL(ret)  \
+    if(!SQL_SUCCEEDED(ret))     \
+    {                           \
+        throw std::exception(); \
+    }
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -72,7 +78,7 @@ int main(int argc, char** args)
     SQLSMALLINT outConnectionStringLength;
 
     SQLHDBC dbc;
-    SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
+    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc));
 
     if (SQL_SUCCEEDED(SQLDriverConnect(
                     dbc,
@@ -89,9 +95,52 @@ int main(int argc, char** args)
     else
     {
         std::cout << "Failed to connect" << std::endl;
+        return 0;
+    }
+
+    // testing an sql statement
+    SQLHSTMT stmt;
+    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt));
+
+    SQLCHAR query[] = "select top 10 * from Person.Person";
+    SQL_THROW_IF_FAIL(SQLExecDirect(stmt, query, SQL_NTS));
+
+    // get amount of columns in the result
+    SQLSMALLINT columnCount;
+    SQL_THROW_IF_FAIL(SQLNumResultCols(stmt, &columnCount));
+
+    int row = 1;
+    // fetch each record in the result
+    while (SQL_SUCCEEDED(SQLFetch(stmt)))
+    {
+        std::cout << "Row " << row++ << ":" << std::endl;
+
+        char buf[512];
+        SQLLEN indicator;
+        // loop through the columns
+        for (SQLSMALLINT i = 1; i <= columnCount; ++i)
+        {
+            SQL_THROW_IF_FAIL(SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator));
+
+            if (indicator == SQL_NULL_DATA)
+                strncpy_s(buf, "NULL", 5);
+
+            std::cout << "  Column " << i << ": " << buf << std::endl;
+        }
     }
 
 
+
+
+    // close the connection
+    if (!SQL_SUCCEEDED(SQLDisconnect(dbc)))
+    {
+        std::cout << "Failed to disconnect" << std::endl;
+    }
+
+    SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+    SQLFreeHandle(SQL_HANDLE_DBC, dbc);
+    SQLFreeHandle(SQL_HANDLE_ENV, env);
     // SQL CODE END
 
 
