@@ -102,8 +102,7 @@ int main(int argc, char** args)
     SQLHSTMT stmt;
     SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt));
 
-    SQLCHAR query[] = "select top 10 * from Person.Person";
-    SQL_THROW_IF_FAIL(SQLExecDirect(stmt, query, SQL_NTS));
+    SQL_THROW_IF_FAIL(SQLExecDirect(stmt, (SQLCHAR*)"select top 10 * from Person.Person", SQL_NTS));
 
     // get amount of columns in the result
     SQLSMALLINT columnCount;
@@ -128,9 +127,6 @@ int main(int argc, char** args)
             std::cout << "  Column " << i << ": " << buf << std::endl;
         }
     }
-
-
-
 
     // close the connection
     if (!SQL_SUCCEEDED(SQLDisconnect(dbc)))
