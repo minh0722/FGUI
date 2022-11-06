@@ -71,5 +71,8 @@
     <ClInclude Include="source\pch.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="source\CTypes.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

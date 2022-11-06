@@ -9,3 +9,5 @@
 #include <wrl/client.h>
 #include <sql.h>
 #include <sqlext.h>
+
+#include "CTypes.h"
