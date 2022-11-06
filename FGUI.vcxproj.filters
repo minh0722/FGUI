@@ -39,6 +39,12 @@
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp">
       <Filter>lib\imgui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="source\DBColumn.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DBRequest.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
     <ClCompile Include="source\pch.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -67,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h">
       <Filter>lib\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DBColumn.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DBRequest.h">
+      <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\pch.h">
       <Filter>source</Filter>
