@@ -6,3 +6,13 @@ DBColumn::DBColumn(const char* _name, SQLSMALLINT _columnType)
     m_ColumnType(_columnType)
 {
 }
+
+const char* DBColumn::GetName() const
+{
+    return m_Name;
+}
+
+SQLSMALLINT DBColumn::GetColumnType() const
+{
+    return m_ColumnType;
+}
