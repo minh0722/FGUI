@@ -3,6 +3,8 @@
 
 //#define SQL_NOUNICODEMAP
 
+#include "pch.h"
+
 #define SQL_THROW_IF_FAIL(ret)  \
     if(!SQL_SUCCEEDED(ret))     \
     {                           \
@@ -12,12 +14,6 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
-#include <d3d11.h>
-#include <tchar.h>
-#include <wrl/client.h>
-#include <sql.h>
-#include <sqlext.h>
-#include <iostream>
 
 static Microsoft::WRL::ComPtr<ID3D11Device> g_pd3dDevice;
 static Microsoft::WRL::ComPtr<ID3D11DeviceContext> g_pd3dDeviceContext;
@@ -90,7 +86,7 @@ int main(int argc, char** args)
                     &outConnectionStringLength,
                     SQL_DRIVER_NOPROMPT)))
     {
-        std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
+         std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
     }
     else
     {

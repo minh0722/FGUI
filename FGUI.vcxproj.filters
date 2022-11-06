@@ -39,6 +39,9 @@
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp">
       <Filter>lib\imgui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="source\pch.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h">
       <Filter>lib\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pch.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
