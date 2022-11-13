@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DBColumn.h"
+#include "DBField.h"
 
 namespace DB
 {
@@ -15,12 +15,12 @@ public:
     void Update();
 
 protected:
-    size_t AddDBColumn(DBColumn&& _field);
-    size_t AddDBColumn(const DBColumn& _field);
+    size_t AddDBColumn(DBField&& _field);
+    size_t AddDBColumn(const DBField& _field);
 
 
 protected:
-    std::vector<DBColumn> m_Columns;
+    std::vector<DBField> m_Columns;
 };
 
 

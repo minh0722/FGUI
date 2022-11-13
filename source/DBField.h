@@ -3,10 +3,10 @@
 namespace DB
 {
 
-class DBColumn
+class DBField
 {
 public:
-    DBColumn(const char* _name, SQLSMALLINT _columnType);
+    DBField(const char* _name, SQLSMALLINT _columnType);
 
     const char* GetName() const;
     SQLSMALLINT GetColumnType() const;
