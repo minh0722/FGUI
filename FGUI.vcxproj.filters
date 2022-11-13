@@ -48,6 +48,9 @@
     <ClCompile Include="source\DBField.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\DBTable.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -84,6 +87,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\DBField.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DBTable.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DBField.h"
+#include "DBTable.h"
 
 namespace DB
 {
@@ -15,13 +15,16 @@ public:
     void Update();
 
 protected:
-    size_t AddDBColumn(DBField&& _field);
-    size_t AddDBColumn(const DBField& _field);
+
+    u32 AddDBTable(DBTable&& _table);
+    u32 AddDBTable(const DBTable& _table);
+
+    u32 AddDBField(u32 _tableIdx, DBField&& _field);
+    u32 AddDBField(u32 _tableIdx, const DBField& _field);
 
 
 protected:
-    std::vector<DBField> m_Columns;
+    std::vector<DBTable> m_Tables;
 };
-
 
 }

@@ -6,7 +6,7 @@ namespace DB
 
 DBRequest::DBRequest(u32 _columnCount/* = 0*/)
 {
-    m_Columns.reserve(_columnCount);
+    m_Tables.reserve(_columnCount);
 }
 
 u32 DBRequest::Search()
@@ -24,16 +24,28 @@ void DBRequest::Update()
 
 }
 
-size_t DBRequest::AddDBColumn(DBField&& _field)
+u32 DBRequest::AddDBTable(DBTable&& _table)
 {
-    m_Columns.emplace_back(std::move(_field));
-    return m_Columns.size();
+    m_Tables.emplace_back(_table);
+    return m_Tables.size();
 }
 
-size_t DBRequest::AddDBColumn(const DBField& _field)
+u32 DBRequest::AddDBTable(const DBTable& _table)
 {
-    m_Columns.push_back(_field);
-    return m_Columns.size();
+    m_Tables.push_back(_table);
+    return m_Tables.size();
+}
+
+u32 DBRequest::AddDBField(u32 _tableIdx, DBField&& _field)
+{
+    m_Tables[_tableIdx].AddDBField(std::move(_field));
+    return m_Tables.size();
+}
+
+u32 DBRequest::AddDBField(u32 _tableIdx, const DBField& _field)
+{
+    m_Tables[_tableIdx].AddDBField(_field);
+    return m_Tables.size();
 }
 
 }
