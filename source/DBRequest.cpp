@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "DBRequest.h"
 
+namespace DB
+{
+
 DBRequest::DBRequest(u32 _columnCount/* = 0*/)
 {
     m_Columns.reserve(_columnCount);
@@ -31,4 +34,6 @@ size_t DBRequest::AddDBColumn(const DBColumn& _field)
 {
     m_Columns.push_back(_field);
     return m_Columns.size();
+}
+
 }

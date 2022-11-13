@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "DBColumn.h"
 
+namespace DB
+{
+
 DBColumn::DBColumn(const char* _name, SQLSMALLINT _columnType)
     : m_Name(_name),
     m_ColumnType(_columnType)
@@ -15,4 +18,6 @@ const char* DBColumn::GetName() const
 SQLSMALLINT DBColumn::GetColumnType() const
 {
     return m_ColumnType;
+}
+
 }

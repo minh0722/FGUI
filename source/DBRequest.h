@@ -2,6 +2,8 @@
 
 #include "DBColumn.h"
 
+namespace DB
+{
 
 class DBRequest
 {
@@ -21,3 +23,5 @@ protected:
     std::vector<DBColumn> m_Columns;
 };
 
+
+}

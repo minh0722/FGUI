@@ -1,5 +1,8 @@
 #pragma once
 
+namespace DB
+{
+
 class DBColumn
 {
 public:
@@ -12,3 +15,5 @@ private:
     const char* m_Name = nullptr;
     SQLSMALLINT m_ColumnType = -1;
 };
+
+}
