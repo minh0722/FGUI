@@ -27,6 +27,7 @@
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="source\DBField.cpp" />
+    <ClCompile Include="source\DBJoin.cpp" />
     <ClCompile Include="source\DBRequest.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
@@ -70,6 +71,7 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="source\CTypes.h" />
     <ClInclude Include="source\DBField.h" />
+    <ClInclude Include="source\DBJoin.h" />
     <ClInclude Include="source\DBRequest.h" />
     <ClInclude Include="source\DBTable.h" />
     <ClInclude Include="source\pch.h" />

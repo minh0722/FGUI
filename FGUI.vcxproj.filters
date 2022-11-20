@@ -51,6 +51,9 @@
     <ClCompile Include="source\DBTable.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\DBJoin.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -90,6 +93,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\DBTable.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DBJoin.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

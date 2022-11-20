@@ -20,4 +20,11 @@ SQLSMALLINT DBField::GetColumnType() const
     return m_ColumnType;
 }
 
+std::ostream& operator<<(std::ostream& _os, const DBField& _field)
+{
+    _os << "." << _field.m_Name;
+
+    return _os;
+}
+
 }
