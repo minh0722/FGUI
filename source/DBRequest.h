@@ -8,8 +8,16 @@ namespace DB
 
 class DBRequest
 {
+    /// <summary>
+    /// Derived classes must declare same enum to enumerate indexes of tables
+    /// </summary>
+    enum Table
+    {
+        Base = -1
+    };
+
 public:
-    DBRequest(u32 _columnCount = 0);
+    DBRequest(u32 _tableCount = 0);
 
     u32 Search() const;
     void Insert();

@@ -4,6 +4,7 @@
 //#define SQL_NOUNICODEMAP
 
 #include "pch.h"
+#include "PersonAddressRequest.h"
 
 #define SQL_THROW_IF_FAIL(ret)  \
     if(!SQL_SUCCEEDED(ret))     \
@@ -29,6 +30,10 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int main(int argc, char** args)
 {
+    // test code for DBRequest
+    DB::PersonAddressRequest request;
+    request.Search();
+
     // SQL CODES BEGIN
     SQLHENV env;
     SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);

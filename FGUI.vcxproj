@@ -38,7 +38,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="source\DBRequests\PersonAddressRequest.cpp" />
     <ClCompile Include="source\DBTable.cpp" />
+    <ClCompile Include="source\DBTables\PersonAddressTable.cpp" />
     <ClCompile Include="source\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
@@ -73,7 +75,9 @@
     <ClInclude Include="source\DBField.h" />
     <ClInclude Include="source\DBJoin.h" />
     <ClInclude Include="source\DBRequest.h" />
+    <ClInclude Include="source\DBRequests\PersonAddressRequest.h" />
     <ClInclude Include="source\DBTable.h" />
+    <ClInclude Include="source\DBTables\PersonAddressTable.h" />
     <ClInclude Include="source\pch.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -156,6 +160,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\DBTables;$(ProjectDir)source\DBRequests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,6 +178,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\DBTables;$(ProjectDir)source\DBRequests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -190,6 +196,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\DBTables;$(ProjectDir)source\DBRequests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -207,6 +214,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\DBTables;$(ProjectDir)source\DBRequests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

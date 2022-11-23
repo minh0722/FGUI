@@ -6,6 +6,7 @@ namespace DB
 class DBField
 {
 public:
+    DBField();
     DBField(const char* _name, SQLSMALLINT _columnType);
 
     const char* GetName() const;

@@ -11,6 +11,11 @@ DBTable::DBTable(const char* _name, const char* _alias, const char* _schema /*= 
 {
 }
 
+void DBTable::AddDBField(const char* _name, SQLSMALLINT _columnType)
+{
+    m_Fields.emplace_back(DBField(_name, _columnType));
+}
+
 void DBTable::AddDBField(const DBField& _field)
 {
     m_Fields.push_back(_field);

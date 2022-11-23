@@ -4,6 +4,12 @@
 namespace DB
 {
 
+DBField::DBField()
+    : m_Name(nullptr),
+    m_ColumnType(-1)
+{
+}
+
 DBField::DBField(const char* _name, SQLSMALLINT _columnType)
     : m_Name(_name),
     m_ColumnType(_columnType)

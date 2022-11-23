@@ -2,14 +2,15 @@
 #include "DBRequest.h"
 #include "DBTable.h"
 #include "DBField.h"
+
 #include <sstream>
 
 namespace DB
 {
 
-DBRequest::DBRequest(u32 _columnCount/* = 0*/)
+DBRequest::DBRequest(u32 _tableCount/* = 0*/)
 {
-    m_Tables.reserve(_columnCount);
+    m_Tables.reserve(_tableCount);
 }
 
 u32 DBRequest::Search() const
@@ -22,7 +23,7 @@ u32 DBRequest::Search() const
     {
         const char* tableAlias = table.GetAlias();
         const auto& fields = table.GetFields();
-        const u32 fieldsCount = fields.size();
+        const size_t fieldsCount = fields.size();
 
         for (u32 i = 0; i < fieldsCount; ++i)
         {
@@ -39,7 +40,7 @@ u32 DBRequest::Search() const
     std::stringstream fromStream;
     fromStream << " FROM ";
 
-    const u32 tablesCount = m_Tables.size();
+    const size_t tablesCount = m_Tables.size();
     for (u32 i = 0; i < tablesCount; ++i)
     {
         fromStream << m_Tables[i];
@@ -51,10 +52,14 @@ u32 DBRequest::Search() const
     }
 
     // WHERE part
-    std::stringstream whereStream;
-    whereStream << " WHERE ";
+    size_t joinsCount = m_Joins.size();
 
-    u32 joinsCount = m_Joins.size();
+    std::stringstream whereStream;
+    if (joinsCount > 0)
+    {
+        whereStream << " WHERE ";
+    }
+
     for (u32 i = 0; i < joinsCount; ++i)
     {
         u32 leftTableIdx = m_Joins[i].m_LeftTableIdx;
@@ -74,6 +79,8 @@ u32 DBRequest::Search() const
         }
     }
 
+    std::string sql = selectStream.str() + fromStream.str() + whereStream.str();
+
     return 0;
 }
 
@@ -90,37 +97,37 @@ void DBRequest::Update()
 u32 DBRequest::AddDBTable(DBTable&& _table)
 {
     m_Tables.emplace_back(_table);
-    return m_Tables.size() - 1;
+    return static_cast<u32>(m_Tables.size() - 1);
 }
 
 u32 DBRequest::AddDBTable(const DBTable& _table)
 {
     m_Tables.push_back(_table);
-    return m_Tables.size() - 1;
+    return static_cast<u32>(m_Tables.size() - 1);
 }
 
 u32 DBRequest::AddDBField(u32 _tableIdx, DBField&& _field)
 {
     m_Tables[_tableIdx].AddDBField(std::move(_field));
-    return m_Tables.size() - 1;
+    return static_cast<u32>(m_Tables.size() - 1);
 }
 
 u32 DBRequest::AddDBField(u32 _tableIdx, const DBField& _field)
 {
     m_Tables[_tableIdx].AddDBField(_field);
-    return m_Tables.size() - 1;
+    return static_cast<u32>(m_Tables.size() - 1);
 }
 
 u32 DBRequest::AddDBJoin(DBJoin&& _join)
 {
     m_Joins.emplace_back(_join);
-    return m_Joins.size() - 1;
+    return static_cast<u32>(m_Joins.size() - 1);
 }
 
 u32 DBRequest::AddDBJoin(const DBJoin& _join)
 {
     m_Joins.push_back(_join);
-    return m_Joins.size() - 1;
+    return static_cast<u32>(m_Joins.size() - 1);
 }
 
 }
