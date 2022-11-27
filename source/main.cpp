@@ -39,40 +39,40 @@ int main(int argc, char** args)
     SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
     SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
 
-    SQLCHAR driver[256];
-    SQLCHAR attr[256];
-    SQLSMALLINT driverLength;
-    SQLSMALLINT attrLength;
-
-    // get information about all drivers
     SQLRETURN ret;
-    while (SQL_SUCCEEDED(ret = SQLDrivers(env, SQL_FETCH_NEXT, driver, 256, &driverLength, attr, 256, &attrLength)))
-    {
-        std::cout << driver << " - " << attr << std::endl;
+    //SQLCHAR driver[256];
+    //SQLCHAR attr[256];
+    //SQLSMALLINT driverLength;
+    //SQLSMALLINT attrLength;
+    //
+    // get information about all drivers
+    //while (SQL_SUCCEEDED(ret = SQLDrivers(env, SQL_FETCH_NEXT, driver, 256, &driverLength, attr, 256, &attrLength)))
+    //{
+    //    std::cout << driver << " - " << attr << std::endl;
+    //
+    //    if (ret == SQL_SUCCESS_WITH_INFO)
+    //    {
+    //        std::cout << "data truncation" << std::endl;
+    //    }
+    //}
 
-        if (ret == SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "data truncation" << std::endl;
-        }
-    }
-
-    std::cout << "\nData sources information:" << std::endl;
-
-    SQLCHAR dsn[256];
-    SQLCHAR desc[256];
-    SQLSMALLINT dsnLength;
-    SQLSMALLINT descLength;
-
+    //std::cout << "\nData sources information:" << std::endl;
+    //
+    //SQLCHAR dsn[256];
+    //SQLCHAR desc[256];
+    //SQLSMALLINT dsnLength;
+    //SQLSMALLINT descLength;
+    //
     // get information about data sources
-    while (SQL_SUCCEEDED(ret = SQLDataSources(env, SQL_FETCH_NEXT, dsn, 256, &dsnLength, desc, 256, &descLength)))
-    {
-        std::cout << dsn << " - " << desc << std::endl;
-
-        if (ret == SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "data truncation" << std::endl;
-        }
-    }
+    //while (SQL_SUCCEEDED(ret = SQLDataSources(env, SQL_FETCH_NEXT, dsn, 256, &dsnLength, desc, 256, &descLength)))
+    //{
+    //    std::cout << dsn << " - " << desc << std::endl;
+    //
+    //    if (ret == SQL_SUCCESS_WITH_INFO)
+    //    {
+    //        std::cout << "data truncation" << std::endl;
+    //    }
+    //}
 
     SQLCHAR dsnString[] = "DSN=AdventureWorks;";
     SQLCHAR outConnectionString[1024];
