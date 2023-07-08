@@ -73,7 +73,7 @@ int main(int argc, char** args)
     //        std::cout << "data truncation" << std::endl;
     //    }
     //}
-
+    int a = 2;
     SQLCHAR dsnString[] = "DSN=AdventureWorks;";
     SQLCHAR outConnectionString[1024];
     SQLSMALLINT outConnectionStringLength;
