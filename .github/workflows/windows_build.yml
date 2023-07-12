@@ -28,6 +28,7 @@ jobs:
   build:
     name: win-build
     runs-on: windows-latest
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v3
@@ -46,6 +47,13 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      
+    - name: Bump version and push tag
+      uses: mathieudutour/github-tag-action@v6.1
+      id: tag_version
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEFAULT_BUMP: minor
       
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
