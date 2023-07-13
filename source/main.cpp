@@ -116,6 +116,7 @@ int main(int argc, char** args)
     {
         std::cout << "Row " << row++ << ":" << std::endl;
 
+        
         char buf[512];
         SQLLEN indicator;
         // loop through the columns
