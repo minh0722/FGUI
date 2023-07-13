@@ -42,6 +42,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: "18.x"
+        cache-dependency-path: ${{env.SOLUTION_FILE_PATH}}
     - name: Install dependencies
       run: npm clean-install
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
