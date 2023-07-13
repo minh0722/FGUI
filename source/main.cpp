@@ -110,6 +110,7 @@ int main(int argc, char** args)
     SQLSMALLINT columnCount;
     SQL_THROW_IF_FAIL(SQLNumResultCols(stmt, &columnCount));
 
+
     int row = 1;
     // fetch each record in the result
     while (SQL_SUCCEEDED(SQLFetch(stmt)))
