@@ -33,25 +33,21 @@ jobs:
     runs-on: windows-latest
     permissions: write-all
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x, 20.x]
-
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     # setup nodejs
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.x"
+        cache-dependency-path: ${{env.SOLUTION_FILE_PATH}}
+    - name: Install dependencies
+      run: npm clean-install
+    - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      run: npm audit signatures
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.3.1
