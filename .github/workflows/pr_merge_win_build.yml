@@ -38,6 +38,13 @@ jobs:
       with:
         submodules: recursive
 
+    # setup nodejs
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - run: npm ci
+    - run: npm test
+
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.3.1
 
