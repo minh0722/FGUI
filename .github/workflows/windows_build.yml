@@ -9,6 +9,8 @@ on:
 #  push:
 #    branches: [ "master" ]
   pull_request:
+    types:
+      - closed
     branches:
       - master
       - 'v*.*.*'
@@ -28,6 +30,7 @@ permissions:
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     name: win-build
     runs-on: windows-latest
     permissions: write-all
