@@ -2,5 +2,6 @@
   "devDependencies": {
     "semantic-release": "^21.0.7"
   },
-  "name": "@minh0722/fgui"
+  "name": "@minh0722/fgui",
+  "private" : true
 }
