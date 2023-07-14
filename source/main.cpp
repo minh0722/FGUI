@@ -74,7 +74,6 @@ int main(int argc, char** args)
     //    }
     //}
 
-    
     SQLCHAR dsnString[] = "DSN=AdventureWorks;";
     SQLCHAR outConnectionString[1024];
     SQLSMALLINT outConnectionStringLength;
