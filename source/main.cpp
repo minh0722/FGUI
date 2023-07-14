@@ -99,7 +99,6 @@ int main(int argc, char** args)
         return 0;
     }
 
-    int a;
     // testing an sql statement
     SQLHSTMT stmt;
     SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt));
