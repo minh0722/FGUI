@@ -140,7 +140,7 @@ int main(int argc, char** args)
     SQLFreeHandle(SQL_HANDLE_ENV, env);
     // SQL CODE END
 
-    int majorV4Patch1;
+    int majorV4Point1;
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = {};
