@@ -5,6 +5,6 @@
   "name": "@minh0722/fgui",
   "private" : true,
   "release": {
-    "branches" : ["master", "[0-9]+.[0-9]+.[0-9]+"]
+    "branches" : ["master", "[0-9]+.[0-9x]+", "[0-9]+.[0-9x]+.[0-9x]"]
   }
 }
