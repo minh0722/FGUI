@@ -15,7 +15,6 @@ env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: .
   BIN_PATH: ./bin/x64
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   # Configuration type to build.
@@ -61,7 +60,6 @@ jobs:
     - name: Semantic Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release
 
     - name: Upload artifacts
