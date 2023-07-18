@@ -2,4 +2,4 @@
 
 PR build:
 
-[![WindowsBuild](https://github.com/minh0722/FGUI/actions/workflows/windows_build.yml/badge.svg?event=pull_request)](https://github.com/minh0722/FGUI/actions/workflows/windows_build.yml)
+[![PR-Merge-Win-Build](https://github.com/minh0722/FGUI/actions/workflows/pr_merge_win_build.yml/badge.svg?branch=master)](https://github.com/minh0722/FGUI/actions/workflows/pr_merge_win_build.yml)
