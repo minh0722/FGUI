@@ -9,7 +9,7 @@
 4. Go to folder `conf`, open file `flyway.conf` and we'll start configure flyway for a local SQL server.
 	- put `flyway.url=jdbc:jtds:sqlserver://./TestVersioning;instance=LOCALDB#397ED88A;namedPipe=true` as the name where
 		- `TestVersioning` is the name of the database that we want to connect
-		- `LOCALDB#397ED88A` is the full server name located in Properties of the database -> Permissions -> Server name
+		- `LOCALDB#397ED88A` is the full server name located in Properties of the database -> Permissions -> Server name. This changes every time the server is restarted so keep in mind to change this in the config file
 	- add `flyway.user` and `flyway.password` (Note: `flyway.user` is the login of the username). If you want to add a new user, you can use this script
 
         ```sql
@@ -37,3 +37,22 @@
         )
         ```
 6. Run `flyway migrate`. The db should now be versioned correctly and a new table `flyway_schema_history` should be created
+
+	- if the SQL Server version of the local MSSQLLocalDB is 2016, then update the SQL Server version and then delete the old MSSQLLocalDB instance and create a new one by doing the following:
+   
+        ```
+        The following command will give you a list of instances.
+        C:\>sqllocaldb info
+        
+        C:\>sqllocaldb stop MSSQLLocalDB
+        LocalDB instance "MSSQLLocalDB" stopped.
+        
+        C:\>sqllocaldb delete MSSQLLocalDB
+        LocalDB instance "MSSQLLocalDB" deleted.
+        
+        C:\>sqllocaldb create MSSQLLocalDB
+        LocalDB instance "MSSQLLocalDB" created with version 15.0.4153.1.
+        
+        C:\>sqllocaldb start MSSQLLocalDB
+        LocalDB instance "MSSQLLocalDB" started.
+        ```
