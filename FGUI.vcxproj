@@ -26,6 +26,7 @@
     <ClCompile Include="lib\imgui\imgui_draw.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="source\BackgroundTaskScheduler.cpp" />
     <ClCompile Include="source\DBField.cpp" />
     <ClCompile Include="source\DBJoin.cpp" />
     <ClCompile Include="source\DBRequest.cpp">
@@ -71,6 +72,7 @@
     <ClInclude Include="lib\imgui\imstb_rectpack.h" />
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
+    <ClInclude Include="source\BackgroundTaskScheduler.h" />
     <ClInclude Include="source\CTypes.h" />
     <ClInclude Include="source\DBField.h" />
     <ClInclude Include="source\DBJoin.h" />
