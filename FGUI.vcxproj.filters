@@ -61,6 +61,9 @@
       <Filter>source\DBTables</Filter>
     </ClCompile>
     <ClCompile Include="source\DBRequests\PersonAddressRequest.cpp" />
+    <ClCompile Include="source\BackgroundTaskScheduler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -109,5 +112,8 @@
       <Filter>source\DBTables</Filter>
     </ClInclude>
     <ClInclude Include="source\DBRequests\PersonAddressRequest.h" />
+    <ClInclude Include="source\BackgroundTaskScheduler.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

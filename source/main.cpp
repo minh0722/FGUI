@@ -3,8 +3,12 @@
 
 //#define SQL_NOUNICODEMAP
 
+
 #include "pch.h"
+#include <thread>
+#include <chrono>
 #include "PersonAddressRequest.h"
+#include "BackgroundTaskScheduler.h"
 
 #define SQL_THROW_IF_FAIL(ret)  \
     if(!SQL_SUCCEEDED(ret))     \
@@ -15,6 +19,8 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+
+using namespace std::chrono_literals;
 
 static Microsoft::WRL::ComPtr<ID3D11Device> g_pd3dDevice;
 static Microsoft::WRL::ComPtr<ID3D11DeviceContext> g_pd3dDeviceContext;
@@ -27,17 +33,15 @@ void CreateRenderTarget();
 void CleanupRenderTarget();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+SQLHDBC g_Dbc;
+SQLHENV g_Env;
+SQLHSTMT g_Stmt;
+bool g_ConnectionEstablished = false;
 
-int main(int argc, char** args)
+bool ConnectToDB()
 {
-    // test code for DBRequest
-    DB::PersonAddressRequest request;
-    request.Search();
-
-    // SQL CODES BEGIN
-    SQLHENV env;
-    SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
-    SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
+    SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &g_Env);
+    SQLSetEnvAttr(g_Env, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
 
     SQLRETURN ret;
     //SQLCHAR driver[256];
@@ -78,40 +82,44 @@ int main(int argc, char** args)
     SQLCHAR outConnectionString[1024];
     SQLSMALLINT outConnectionStringLength;
 
-    SQLHDBC dbc;
-    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc));
+    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_DBC, g_Env, &g_Dbc));
 
     if (SQL_SUCCEEDED(SQLDriverConnect(
-                    dbc,
-                    NULL,
-                    dsnString,
-                    sizeof(dsnString),
-                    outConnectionString,
-                    sizeof(outConnectionString),
-                    &outConnectionStringLength,
-                    SQL_DRIVER_NOPROMPT)))
+        g_Dbc,
+        NULL,
+        dsnString,
+        sizeof(dsnString),
+        outConnectionString,
+        sizeof(outConnectionString),
+        &outConnectionStringLength,
+        SQL_DRIVER_NOPROMPT)))
     {
-         std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
+        std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
+        return true;
     }
     else
     {
         std::cout << "Failed to connect" << std::endl;
-        return 0;
+        return false;
     }
+}
+
+void TestDB()
+{
+    std::this_thread::sleep_for(1000ms);
 
     // testing an sql statement
-    SQLHSTMT stmt;
-    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt));
+    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, g_Dbc, &g_Stmt));
 
-    SQL_THROW_IF_FAIL(SQLExecDirect(stmt, (SQLCHAR*)"select top 10 * from Person.Person", SQL_NTS));
+    SQL_THROW_IF_FAIL(SQLExecDirect(g_Stmt, (SQLCHAR*)"select top 10 * from Person.Person", SQL_NTS));
 
     // get amount of columns in the result
     SQLSMALLINT columnCount;
-    SQL_THROW_IF_FAIL(SQLNumResultCols(stmt, &columnCount));
+    SQL_THROW_IF_FAIL(SQLNumResultCols(g_Stmt, &columnCount));
 
     int row = 1;
     // fetch each record in the result
-    while (SQL_SUCCEEDED(SQLFetch(stmt)))
+    while (SQL_SUCCEEDED(SQLFetch(g_Stmt)))
     {
         std::cout << "Row " << row++ << ":" << std::endl;
 
@@ -120,7 +128,7 @@ int main(int argc, char** args)
         // loop through the columns
         for (SQLSMALLINT i = 1; i <= columnCount; ++i)
         {
-            SQL_THROW_IF_FAIL(SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator));
+            SQL_THROW_IF_FAIL(SQLGetData(g_Stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator));
 
             if (indicator == SQL_NULL_DATA)
                 strncpy_s(buf, "NULL", 5);
@@ -128,16 +136,37 @@ int main(int argc, char** args)
             std::cout << "  Column " << i << ": " << buf << std::endl;
         }
     }
+}
 
+void CloseConnectionAndFreeDBHandles()
+{
     // close the connection
-    if (!SQL_SUCCEEDED(SQLDisconnect(dbc)))
+    if (!SQL_SUCCEEDED(SQLDisconnect(g_Dbc)))
     {
         std::cout << "Failed to disconnect" << std::endl;
     }
 
-    SQLFreeHandle(SQL_HANDLE_STMT, stmt);
-    SQLFreeHandle(SQL_HANDLE_DBC, dbc);
-    SQLFreeHandle(SQL_HANDLE_ENV, env);
+    SQLFreeHandle(SQL_HANDLE_STMT, g_Stmt);
+    SQLFreeHandle(SQL_HANDLE_DBC, g_Dbc);
+    SQLFreeHandle(SQL_HANDLE_ENV, g_Env);
+}
+
+int main(int argc, char** args)
+{
+    BackgroundTaskScheduler::Init();
+
+    // test code for DBRequest
+    DB::PersonAddressRequest request;
+    request.Search();
+
+    // SQL CODES BEGIN
+    //g_ConnectionEstablished = ConnectToDB();
+
+    //// testing an sql statement
+    //TestDB();
+
+    //// close the connection and free any handle resources
+    //CloseConnectionAndFreeDBHandles();
     // SQL CODE END
 
     int test;
@@ -270,6 +299,18 @@ int main(int argc, char** args)
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
 
+            if (ImGui::Button("Connect DB") && !g_ConnectionEstablished)
+            {
+                g_ConnectionEstablished = ConnectToDB();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Test DB"))
+            {
+                // this blocks main thread whereas submit task does not
+                //TestDB();
+                BackgroundTaskScheduler::AddTask(TestDB);
+            }
+
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
         }
@@ -302,6 +343,12 @@ int main(int argc, char** args)
 
         g_pSwapChain->Present(1, 0); // Present with vsync
         //g_pSwapChain->Present(0, 0); // Present without vsync
+    }
+
+    if (g_ConnectionEstablished)
+    {
+        CloseConnectionAndFreeDBHandles();
+        g_ConnectionEstablished = false;
     }
 
     // Cleanup
