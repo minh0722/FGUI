@@ -7,14 +7,9 @@
 #include "pch.h"
 #include <thread>
 #include <chrono>
+#include "DBConnections.h"
 #include "PersonAddressRequest.h"
 #include "BackgroundTaskScheduler.h"
-
-#define SQL_THROW_IF_FAIL(ret)  \
-    if(!SQL_SUCCEEDED(ret))     \
-    {                           \
-        throw std::exception(); \
-    }
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -33,141 +28,43 @@ void CreateRenderTarget();
 void CleanupRenderTarget();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-SQLHDBC g_Dbc;
-SQLHENV g_Env;
+DB::DBConnections g_Conn;
 SQLHSTMT g_Stmt;
 bool g_ConnectionEstablished = false;
 
 bool ConnectToDB()
 {
-    SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &g_Env);
-    SQLSetEnvAttr(g_Env, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
-
-    SQLRETURN ret;
-    //SQLCHAR driver[256];
-    //SQLCHAR attr[256];
-    //SQLSMALLINT driverLength;
-    //SQLSMALLINT attrLength;
-    //
-    // get information about all drivers
-    //while (SQL_SUCCEEDED(ret = SQLDrivers(env, SQL_FETCH_NEXT, driver, 256, &driverLength, attr, 256, &attrLength)))
-    //{
-    //    std::cout << driver << " - " << attr << std::endl;
-    //
-    //    if (ret == SQL_SUCCESS_WITH_INFO)
-    //    {
-    //        std::cout << "data truncation" << std::endl;
-    //    }
-    //}
-
-    //std::cout << "\nData sources information:" << std::endl;
-    //
-    //SQLCHAR dsn[256];
-    //SQLCHAR desc[256];
-    //SQLSMALLINT dsnLength;
-    //SQLSMALLINT descLength;
-    //
-    // get information about data sources
-    //while (SQL_SUCCEEDED(ret = SQLDataSources(env, SQL_FETCH_NEXT, dsn, 256, &dsnLength, desc, 256, &descLength)))
-    //{
-    //    std::cout << dsn << " - " << desc << std::endl;
-    //
-    //    if (ret == SQL_SUCCESS_WITH_INFO)
-    //    {
-    //        std::cout << "data truncation" << std::endl;
-    //    }
-    //}
-
-    SQLCHAR dsnString[] = "DSN=AdventureWorks;";
-    SQLCHAR outConnectionString[1024];
-    SQLSMALLINT outConnectionStringLength;
-
-    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_DBC, g_Env, &g_Dbc));
-
-    if (SQL_SUCCEEDED(SQLDriverConnect(
-        g_Dbc,
-        NULL,
-        dsnString,
-        sizeof(dsnString),
-        outConnectionString,
-        sizeof(outConnectionString),
-        &outConnectionStringLength,
-        SQL_DRIVER_NOPROMPT)))
+    try
     {
-        std::cout << "\nSuccessfully connected to " << outConnectionString << std::endl;
-        return true;
+        g_Conn.Connect("AdventureWorks2019");
     }
-    else
+    catch (...)
     {
         std::cout << "Failed to connect" << std::endl;
         return false;
     }
+
+    return true;
 }
 
 void TestDB()
 {
     std::this_thread::sleep_for(1000ms);
 
-    // testing an sql statement
-    SQL_THROW_IF_FAIL(SQLAllocHandle(SQL_HANDLE_STMT, g_Dbc, &g_Stmt));
-
-    SQL_THROW_IF_FAIL(SQLExecDirect(g_Stmt, (SQLCHAR*)"select top 10 * from Person.Person", SQL_NTS));
-
-    // get amount of columns in the result
-    SQLSMALLINT columnCount;
-    SQL_THROW_IF_FAIL(SQLNumResultCols(g_Stmt, &columnCount));
-
-    int row = 1;
-    // fetch each record in the result
-    while (SQL_SUCCEEDED(SQLFetch(g_Stmt)))
-    {
-        std::cout << "Row " << row++ << ":" << std::endl;
-
-        char buf[512];
-        SQLLEN indicator;
-        // loop through the columns
-        for (SQLSMALLINT i = 1; i <= columnCount; ++i)
-        {
-            SQL_THROW_IF_FAIL(SQLGetData(g_Stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator));
-
-            if (indicator == SQL_NULL_DATA)
-                strncpy_s(buf, "NULL", 5);
-
-            std::cout << "  Column " << i << ": " << buf << std::endl;
-        }
-    }
+    DB::PersonAddressRequest request(&g_Conn);
+    request.Search();
 }
 
 void CloseConnectionAndFreeDBHandles()
 {
-    // close the connection
-    if (!SQL_SUCCEEDED(SQLDisconnect(g_Dbc)))
-    {
-        std::cout << "Failed to disconnect" << std::endl;
-    }
+    g_Conn.Disconnect();
 
     SQLFreeHandle(SQL_HANDLE_STMT, g_Stmt);
-    SQLFreeHandle(SQL_HANDLE_DBC, g_Dbc);
-    SQLFreeHandle(SQL_HANDLE_ENV, g_Env);
 }
 
 int main(int argc, char** args)
 {
     BackgroundTaskScheduler::Init();
-
-    // test code for DBRequest
-    DB::PersonAddressRequest request;
-    request.Search();
-
-    // SQL CODES BEGIN
-    //g_ConnectionEstablished = ConnectToDB();
-
-    //// testing an sql statement
-    //TestDB();
-
-    //// close the connection and free any handle resources
-    //CloseConnectionAndFreeDBHandles();
-    // SQL CODE END
 
     int test;
     int majorV5;

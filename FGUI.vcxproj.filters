@@ -64,6 +64,7 @@
     <ClCompile Include="source\BackgroundTaskScheduler.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\DBConnections.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -115,5 +116,6 @@
     <ClInclude Include="source\BackgroundTaskScheduler.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="source\DBConnections.h" />
   </ItemGroup>
 </Project>

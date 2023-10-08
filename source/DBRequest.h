@@ -6,6 +6,8 @@
 namespace DB
 {
 
+class DBConnections;
+
 class DBRequest
 {
     /// <summary>
@@ -17,11 +19,15 @@ class DBRequest
     };
 
 public:
-    DBRequest(u32 _tableCount = 0);
+    DBRequest(const DBConnections* _conn, u32 _tableCount = 0);
+    ~DBRequest();
 
     u32 Search() const;
     void Insert();
     void Update();
+
+    template <typename T>
+    T GetSearchValue(u32 _rowIdx, u32 _columnIdx);
 
 protected:
 
@@ -37,6 +43,9 @@ protected:
 protected:
     std::vector<DBTable> m_Tables;
     std::vector<DBJoin> m_Joins;
+    const DBConnections* m_Conn;
+    
+    mutable SQLHSTMT m_Stmt = nullptr;
 };
 
 }
