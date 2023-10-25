@@ -62,15 +62,12 @@ void CloseConnectionAndFreeDBHandles()
     SQLFreeHandle(SQL_HANDLE_STMT, g_Stmt);
 }
 
-int main(int argc, char** args)
+WNDCLASSEXW wc = {};
+HWND hwnd;
+bool InitRendering()
 {
-    BackgroundTaskScheduler::Init();
-
-    int test;
-    int majorV5;
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
-    WNDCLASSEXW wc = {};
     wc.cbSize = sizeof(wc);
     wc.style = CS_CLASSDC;
     wc.lpfnWndProc = WndProc;
@@ -85,26 +82,24 @@ int main(int argc, char** args)
     wc.hIconSm = NULL;
 
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(
-                    wc.lpszClassName,
-                    L"Dear ImGui DirectX11 Example",
-                    WS_OVERLAPPEDWINDOW,
-                    100, 100,
-                    1280, 800,
-                    NULL,
-                    NULL,
-                    wc.hInstance,
-                    NULL);
+    hwnd = ::CreateWindowW(
+        wc.lpszClassName,
+        L"Dear ImGui DirectX11 Example",
+        WS_OVERLAPPEDWINDOW,
+        100, 100,
+        1280, 800,
+        NULL,
+        NULL,
+        wc.hInstance,
+        NULL);
 
-    // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
     {
         CleanupDeviceD3D();
         ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-        return 1;
+        return false;
     }
 
-    // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
     ::UpdateWindow(hwnd);
 
@@ -143,8 +138,28 @@ int main(int argc, char** args)
     // ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f,
     //                              NULL, io.Fonts->GetGlyphRangesJapanese());
     // IM_ASSERT(font != NULL);
+}
 
-    // Our state
+void CleanupRendering()
+{
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+
+    CleanupDeviceD3D();
+    ::DestroyWindow(hwnd);
+    ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
+}
+
+int main(int argc, char** args)
+{
+    BackgroundTaskScheduler::Init();
+
+    if (!InitRendering())
+    {
+        return 1;
+    }
+
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -248,14 +263,7 @@ int main(int argc, char** args)
         g_ConnectionEstablished = false;
     }
 
-    // Cleanup
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
-
-    CleanupDeviceD3D();
-    ::DestroyWindow(hwnd);
-    ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
+    CleanupRendering();
 
     return 0;
 }
