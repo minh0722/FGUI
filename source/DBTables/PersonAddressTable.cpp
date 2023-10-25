@@ -16,8 +16,8 @@ PersonAddressTable::PersonAddressTable()
     m_Fields[Field::StateProvinceId] = DBField("StateProvinceId", SQL_INTEGER);
     m_Fields[Field::PostalCode] = DBField("PostalCode", SQL_VARCHAR);
     m_Fields[Field::SpatialLocation] = DBField("SpatialLocation", SQL_CHAR /*actual is geolocation*/);
-    m_Fields[Field::rowguid] = DBField("rowguid", SQL_CHAR /*actual is uniqueidentifier*/);
-    m_Fields[Field::ModifiedDate] = DBField("ModifiedDate", SQL_INTEGER);
+    m_Fields[Field::rowguid] = DBField("rowguid", SQL_GUID /*actual is uniqueidentifier*/);
+    m_Fields[Field::ModifiedDate] = DBField("ModifiedDate", SQL_DATETIME);
 }
 
 }

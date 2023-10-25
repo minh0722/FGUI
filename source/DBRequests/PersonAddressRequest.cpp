@@ -6,8 +6,8 @@
 namespace DB
 {
 
-PersonAddressRequest::PersonAddressRequest()
-    : DBRequest(1)
+PersonAddressRequest::PersonAddressRequest(const DBConnections* _conn)
+    : DBRequest(_conn, 1)
 {
     AddDBTable(PersonAddressTable());
 }

@@ -11,3 +11,12 @@
 #include <sqlext.h>
 
 #include "CTypes.h"
+
+#define SQL_THROW_IF_FAIL(ret)                      \
+    if(!SQL_SUCCEEDED(ret))                         \
+    {                                               \
+        char buf[20];                               \
+        snprintf(buf, 20, "SQL error: %d", ret);    \
+        printf("%s", buf);                          \
+        throw std::exception();                     \
+    }
